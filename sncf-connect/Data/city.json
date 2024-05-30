@@ -1,0 +1,45 @@
+[
+    { "name" : "Paris" , "stations" : ["Gare du nord" ,"Gare de Lyon","Gare de Austerlitz", "Gare de l'Est", "Gare du Nord", "Gare Montparnasse" ,"Gare de Saint-Lazare"] },
+
+    { "name" : "Toulouse" ,"stations" : ["Gare de Toulouse-Matabiau"] },
+
+    { "name" : "Lyon", "stations" : ["Gare de Lyon-Perrache", "Gare de Lyon-Part-Dieu"] },
+
+    { "name" : "Marseille", "stations" : ["Gare de Marseille-Saint-Charles"] },
+
+    { "name" : "Bordeaux", "stations" : ["Gare de Bordeaux-Saint-Jean"] },
+
+    { "name" : "Lille" ,"stations" : ["Gare de Lille-Flandres", "Gare de Lille-Europe"] },
+
+    { "name" : "Nantes", "stations" : ["Gare de Nantes"] },
+
+    { "name" : "Strasbourg", "stations" : ["Gare de Strasbourg"] },
+
+    { "name" : "Rennes" ,"stations" : ["Gare de Rennes"] },
+
+    { "name" : "Montpellier", "stations" : ["Gare de Montpellier-Saint-Roch"] },
+
+    { "name" : "Nice", "stations" : ["Gare de Nice-Ville"] },
+
+    { "name" : "Toulon", "stations" : ["Gare de Toulon"] },
+
+    { "name" : "Nancy", "stations" : ["Gare de Nancy-Ville"] },
+
+    { "name" : "Dijon", "stations" : ["Gare de Dijon-Ville"] },
+
+    { "name" : "Brest" ,"stations" : ["Gare de Brest"] },
+
+    { "name" : "Le Havre" ,"stations" : ["Gare du Havre"] },
+
+    { "name" : "Reims","stations" : ["Gare de Reims"] },
+
+    { "name" : "Orléans" ,"stations" : ["Gare d'Orléans"] },
+
+    { "name" : "Angers" ,"stations" : ["Gare d'Angers-Saint-Laud"] },
+
+    { "name" : "Grenoble" ,"stations" : ["Gare de Grenoble"] },
+
+    { "name" : "Avignon" ,"stations" : ["Gare d'Avignon-Centre"] },
+
+    { "name" : "Tours" ,"stations"  : ["gare de Saint-Pierre-des-Corps" , "Gare de Tours" ] }
+]

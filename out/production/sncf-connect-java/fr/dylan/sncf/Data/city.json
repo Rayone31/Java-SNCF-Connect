@@ -1,5 +1,5 @@
 [
-    { "name" : "Paris" , "stations" : ["Gare du nord" ,"Gare de Lyon","Gare de Austerlitz", "Gare de l'Est", "Gare du Nord", "Gare Montparnasse" ,"Gare de Saint-Lazare"] },
+    { "name" : "Paris" , "stations" : ["Gare de Lyon","Gare de Austerlitz", "Gare de l'Est", "Gare du Nord", "Gare Montparnasse" ,"Gare de Saint-Lazare"] },
 
     { "name" : "Toulouse" ,"stations" : ["Gare de Toulouse-Matabiau"] },
 

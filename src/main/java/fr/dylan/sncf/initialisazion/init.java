@@ -1,113 +1,126 @@
 package fr.dylan.sncf.initialisazion;
 
+import fr.dylan.sncf.passport.Ticketing;
+import fr.dylan.sncf.place.City;
 import fr.dylan.sncf.place.Route;
+import fr.dylan.sncf.place.Station;
+import fr.dylan.sncf.colorpanel.color;
+
 import java.util.stream.Collectors;
 import java.util.Scanner;
 import java.util.List;
 
-
 public class init {
     private Scanner scanner;
+    
 
     public init() {
         this.scanner = new Scanner(System.in);
     }
 
     public void startDialogue() {
-        System.out.println("Bienvenue dans Sncf-connect.");
-
-        System.out.println("Voici les commandes disponibles :");
-
-        System.out.println("Voyager : pour commencer à chercher un trajet");
-
-        System.out.println("Billets : pour acceder aux billets");
-
-        System.out.println("quit : pour quitter l'application");
+        afficherMessagesDeBienvenue();
 
         while (true) {
             String userInput = scanner.nextLine();
 
-            if ("Voyager".equals(userInput)) {
+            if ("Travel".equals(userInput)) {
                 voyage();
             }
 
-            if ("quit".equals(userInput)) {
-                System.out.println("Au revoir !");
-                break;
+            if ("Tickets".equals(userInput)) {
+                ticket();
             }
 
-            System.out.println("Vous avez entré : " + userInput);
+            if ("quit".equals(userInput)) {
+                color.printColor("Bye !", color.Red());
+                break;
+            }
         }
 
         scanner.close();
     }
 
-    private void voyage() {
-        System.out.println("Vous avez choisi de voyager");
+    private void afficherMessagesDeBienvenue() {
+        color.printColor("Welcome to Sncf-connect.", color.Blue());
+        color.printColor("Here are the available commands:", color.Green());
+        color.printColor("Travel: to start looking for a route", color.Green());
+        color.printColor("Tickets: to access the tickets", color.Green());
+        color.printColor("quit: to exit the application", color.Green());
+    }
 
+    private void voyage() {
+    color.printColor("You have chosen to travel", color.Blue());
         List<Route> routes = Route.fromJson();
-        List<String> cities = routes.stream().map(Route::getCity).collect(Collectors.toList());
+        List<String> cities = routes.stream().map(route -> route.getCity().getName()).collect(Collectors.toList());
 
         String departureCity = "";
         while (!cities.contains(departureCity)) {
-            System.out.println("Voici les villes disponibles :");
+            color.printColor("Here are the cities available:", color.Yellow());
             for (String city : cities) {
-                System.out.println(city);
+                color.printColor(city, color.Green());
             }
-            System.out.println("où vous situer vous ?");
+            color.printColor("Where are you located?", color.Blue());
             departureCity = scanner.nextLine();
             if (!cities.contains(departureCity)) {
-                System.out.println("Ville non reconnue. Veuillez réessayer.");
+                color.printColor("Unrecognized city. Try Again.", color.Red());
             }
         }
 
         List<Route> departureRoutes = Route.updateRoutes(routes, departureCity);
-        List<String> departureStations = departureRoutes.stream().flatMap(route -> route.getStations().stream()).collect(Collectors.toList());
+        List<String> departureStations = departureRoutes.stream()
+            .flatMap(route -> route.getStations().stream())
+            .map(station -> station.getName())
+            .collect(Collectors.toList());
 
         String departureStation = "";
         while (!departureStations.contains(departureStation)) {
-            System.out.println("Voici les gares disponibles dans cette ville :");
+           color.printColor("Here are the stations available in this city:", color.Yellow());
             for (String station : departureStations) {
-                System.out.println(station);
-            }
-            System.out.println("Quelle est votre gare de départ ?");
+                color.printColor(station, color.Green());            }
+                color.printColor("What is your departure station?", color.Blue());
             departureStation = scanner.nextLine();
             if (!departureStations.contains(departureStation)) {
-                System.out.println("Gare non reconnue. Veuillez réessayer.");
+                color.printColor("Unrecognized station. Try Again.", color.Red());
             }
         }
-
         String arrivalCity = "";
-        while (!cities.contains(arrivalCity)) {
-            System.out.println("Voici les villes disponibles :");
+        while (!cities.contains(arrivalCity) || arrivalCity.equals(departureCity)) {
+            color.printColor("Here are the cities available:", color.Yellow());
             for (String city : cities) {
-                System.out.println(city);
+                color.printColor(city, color.Green());
             }
-            System.out.println("Où voulez-vous aller ?");
+            color.printColor("Where do you want to go?", color.Blue());
             arrivalCity = scanner.nextLine();
             if (!cities.contains(arrivalCity)) {
-                System.out.println("Ville non reconnue. Veuillez réessayer.");
+               color.printColor("Unrecognized city. Try Again.", color.Red());
+            } else if (arrivalCity.equals(departureCity)) {
+                color.printColor("Arrival city cannot be the same as departure city. Please choose a different city.", color.Red());
+                arrivalCity = ""; 
             }
         }
 
         List<Route> arrivalRoutes = Route.updateRoutes(routes, arrivalCity);
-        List<String> arrivalStations = arrivalRoutes.stream().flatMap(route -> route.getStations().stream()).collect(Collectors.toList());
+        List<String> arrivalStations = arrivalRoutes.stream()
+            .flatMap(route -> route.getStations().stream())
+            .map(station -> station.getName()) 
+            .collect(Collectors.toList());
 
         String arrivalStation = "";
         while (!arrivalStations.contains(arrivalStation)) {
-            System.out.println("Voici les gares disponibles dans cette ville :");
+            color.printColor("Here are the available times:", color.Yellow());
             for (String station : arrivalStations) {
-                System.out.println(station);
+                color.printColor(station, color.Green());
             }
-            System.out.println("Quelle est votre gare d'arrivée ?");
+            color.printColor("What is your arrival station?", color.Blue());
             arrivalStation = scanner.nextLine();
             if (!arrivalStations.contains(arrivalStation)) {
-                System.out.println("Gare non reconnue. Veuillez réessayer.");
+                color.printColor("Unrecognized station. Try Again.", color.Red());
             }
         }
 
         // system de choix d'heure 
-        System.out.println("Voici les horaires disponibles :");
+        color.printColor("Here are the available times:", color.Yellow());
 
         // Pour chaque route de départ
         for (Route route : departureRoutes) {
@@ -115,34 +128,100 @@ public class init {
 
             // Pour chaque période
             for (String hour : hourly) {
-                System.out.println("Horaire : " + hour);
+                color.printColor("Hourly :" + hour, color.Green());
             }
         }
 
-        // Demander à l'utilisateur de choisir une heure
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Veuillez choisir une heure parmi celles disponibles :");
-        String chosenHour = scanner.nextLine();
+        String chosenHour = "";
+        // Boucle jusqu'à ce qu'un choix valide soit fait
+        while (chosenHour.isEmpty()) {
+            // Demander à l'utilisateur de choisir une heure
+            color.printColor("Please choose a time from those available (cannot be empty):", color.Blue());
+            chosenHour = scanner.nextLine();
 
-        System.out.println("Vous avez choisi l'heure : " + chosenHour);
+            if (chosenHour.isEmpty()) {
+                color.printColor("You must enter a time.", color.Red());
+            }
+        }
+
+        color.printColor("You chose the time: " + chosenHour, color.Green());
 
         // Afficher un résumé des choix de l'utilisateur
-        System.out.println("Voici le résumé de votre voyage :");
-        System.out.println("Ville de départ : " + departureCity);
-        System.out.println("Gare de départ : " + departureStation);
-        System.out.println("Ville d'arrivée : " + arrivalCity);
-        System.out.println("Gare d'arrivée : " + arrivalStation);
-        System.out.println("Heure choisie : " + chosenHour);
+        color.printColor("Here is the summary of your trip:", color.Yellow());
+        color.printColor("Departure city :" + departureCity, color.Green());
+        color.printColor("Departure station : " + departureStation, color.Green());
+        color.printColor("Arrival city: " + arrivalCity, color.Green());
+        color.printColor("Arrival station: " + arrivalStation, color.Green());
+        color.printColor("Selected time: " + chosenHour, color.Green());
 
         // Demander à l'utilisateur de confirmer
-        System.out.println("Voulez-vous confirmer ces informations ? (yes/no)");
+        color.printColor("Do you want to confirm this information? (yes/no)?", color.Blue());
         String confirmation = scanner.nextLine();
-
+        String departureCityObj = City.getCityByName(departureCity);
+        String departureStationObj = Station.getStationByName(departureStation);
+        String arrivalCityObj = City.getCityByName(arrivalCity);
+        String arrivalStationObj = Station.getStationByName(arrivalStation);
+        
+        // Puis passez ces objets à enregistrerTicket
         if ("yes".equals(confirmation)) {
-            System.out.println("Votre voyage a été confirmé. Bon voyage !");
+            color.printColor("Your trip has been confirmed. Enjoy your trip!", color.Green());
+            Ticketing.enregistrerTicket(departureCity, departureStation, arrivalCity, arrivalStation, chosenHour);
+            startDialogue();
         } else {
-            System.out.println("Votre voyage n'a pas été confirmé. Veuillez recommencer.");
+            color.printColor("Your trip has not been confirmed. Please start again.", color.Red());
             startDialogue();
         }
     }
+
+    private void ticket() {
+        color.printColor("You have chosen to access the tickets", color.Green());
+        Ticketing.afficherBillets();
+        message_ticket();
+        
+        while (true) {
+            String userInput = scanner.nextLine();
+            
+            if ("return".equals(userInput)) {
+               color.printColor("Do you really want to return to the main menu? (yes/no)", color.Blue());
+                String confirmation = scanner.nextLine();
+                if ("yes".equals(confirmation)) {
+                    startDialogue();
+                    break; 
+                } else if ("no".equals(confirmation)) {
+                    message_ticket();
+                } else {
+                    color.printColor("Invalid input. Please answer 'yes' or 'no'.", color.Red());
+                }
+            }
+
+            if (userInput.startsWith("delete")) {
+                String[] parts = userInput.split(" ");
+                if (parts.length == 2) {
+                    try {
+                        int ticketNumber = Integer.parseInt(parts[1]);
+                        Ticketing.supprimerTicket(ticketNumber);
+                        color.printColor("Ticket number " + ticketNumber + " has been deleted.", color.Green());
+                    } catch (NumberFormatException e) {
+                       color.printColor("Invalid ticket number. Please enter a valid number.", color.Red());
+                    }
+                } else {
+                    color.printColor("Invalid input. Please enter 'delete' followed by the ticket number.", color.Red());
+                }
+                ticket();
+            }
+
+            color.printColor("You entered:" + userInput, color.Blue());
+        }
+
+        scanner.close();
+
+       
+    }
+
+    private void message_ticket() {
+        color.printColor("Here are the available commands:", color.Yellow());
+        color.printColor("delete (number ticket): to delete a ticket", color.Green());
+        color.printColor("return: to return to the main menu", color.Green());
+    }
+    
 }

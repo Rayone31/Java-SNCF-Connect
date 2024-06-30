@@ -4,7 +4,7 @@ import fr.dylan.sncf.place.City;
 import fr.dylan.sncf.place.Station;
 
 
-
+// Ticket class
 class Ticket {
     private String departureCity;
     private String departureStation;
@@ -12,6 +12,7 @@ class Ticket {
     private String arrivalStation;
     private String chosenHour;
 
+    // Constructor
     public Ticket(String departureCity, String departureStation, String arrivalCity, String arrivalStation, String chosenHour) {
         this.departureCity = departureCity;
         this.departureStation = departureStation;
@@ -20,21 +21,18 @@ class Ticket {
         this.chosenHour = chosenHour;
     }
 
+    
     public Ticket() {
     }
 
+    // Getters
     public String getDepartureCity() { return departureCity; }
-    public void setDepartureCity(String departureCity) { this.departureCity = departureCity; }
 
     public String getDepartureStation() { return departureStation; }
-    public void setDepartureStation(String departureStation) { this.departureStation = departureStation; }
 
     public String getArrivalCity() { return arrivalCity; }
-    public void setArrivalCity(String arrivalCity) { this.arrivalCity = arrivalCity; }
 
     public String getArrivalStation() { return arrivalStation; }
-    public void setArrivalStation(String arrivalStation) { this.arrivalStation = arrivalStation; }
 
     public String getChosenHour() { return chosenHour; }
-    public void setChosenHour(String chosenHour) { this.chosenHour = chosenHour; }
 }

@@ -14,18 +14,21 @@ public class init {
     private Scanner scanner;
     
 
+    // Constructor
     public init() {
         this.scanner = new Scanner(System.in);
     }
 
+    // Start dialogue
     public void startDialogue() {
-        afficherMessagesDeBienvenue();
+        message_accueil();
 
+        // command loop
         while (true) {
             String userInput = scanner.nextLine();
 
             if ("Travel".equals(userInput)) {
-                voyage();
+                travel();
             }
 
             if ("Tickets".equals(userInput)) {
@@ -41,7 +44,7 @@ public class init {
         scanner.close();
     }
 
-    private void afficherMessagesDeBienvenue() {
+    private void message_accueil() {
         color.printColor("Welcome to Sncf-connect.", color.Blue());
         color.printColor("Here are the available commands:", color.Green());
         color.printColor("Travel: to start looking for a route", color.Green());
@@ -49,11 +52,13 @@ public class init {
         color.printColor("quit: to exit the application", color.Green());
     }
 
-    private void voyage() {
+    // Travel method to find a route
+    private void travel() {
     color.printColor("You have chosen to travel", color.Blue());
         List<Route> routes = Route.fromJson();
         List<String> cities = routes.stream().map(route -> route.getCity().getName()).collect(Collectors.toList());
 
+        // Departure city
         String departureCity = "";
         while (!cities.contains(departureCity)) {
             color.printColor("Here are the cities available:", color.Yellow());
@@ -72,7 +77,7 @@ public class init {
             .flatMap(route -> route.getStations().stream())
             .map(station -> station.getName())
             .collect(Collectors.toList());
-
+        // Departure station
         String departureStation = "";
         while (!departureStations.contains(departureStation)) {
            color.printColor("Here are the stations available in this city:", color.Yellow());
@@ -84,6 +89,7 @@ public class init {
                 color.printColor("Unrecognized station. Try Again.", color.Red());
             }
         }
+        // Arrival city
         String arrivalCity = "";
         while (!cities.contains(arrivalCity) || arrivalCity.equals(departureCity)) {
             color.printColor("Here are the cities available:", color.Yellow());
@@ -106,6 +112,7 @@ public class init {
             .map(station -> station.getName()) 
             .collect(Collectors.toList());
 
+        // Arrival station
         String arrivalStation = "";
         while (!arrivalStations.contains(arrivalStation)) {
             color.printColor("Here are the available times:", color.Yellow());
@@ -119,23 +126,21 @@ public class init {
             }
         }
 
-        // system de choix d'heure 
         color.printColor("Here are the available times:", color.Yellow());
 
-        // Pour chaque route de départ
+
         for (Route route : departureRoutes) {
             List<String> hourly = route.getHourlyRoute();
 
-            // Pour chaque période
+
             for (String hour : hourly) {
                 color.printColor("Hourly :" + hour, color.Green());
             }
         }
-
+        // Chosen hour
         String chosenHour = "";
-        // Boucle jusqu'à ce qu'un choix valide soit fait
+
         while (chosenHour.isEmpty()) {
-            // Demander à l'utilisateur de choisir une heure
             color.printColor("Please choose a time from those available (cannot be empty):", color.Blue());
             chosenHour = scanner.nextLine();
 
@@ -143,10 +148,9 @@ public class init {
                 color.printColor("You must enter a time.", color.Red());
             }
         }
-
+        // Confirmation
         color.printColor("You chose the time: " + chosenHour, color.Green());
 
-        // Afficher un résumé des choix de l'utilisateur
         color.printColor("Here is the summary of your trip:", color.Yellow());
         color.printColor("Departure city :" + departureCity, color.Green());
         color.printColor("Departure station : " + departureStation, color.Green());
@@ -154,7 +158,6 @@ public class init {
         color.printColor("Arrival station: " + arrivalStation, color.Green());
         color.printColor("Selected time: " + chosenHour, color.Green());
 
-        // Demander à l'utilisateur de confirmer
         color.printColor("Do you want to confirm this information? (yes/no)?", color.Blue());
         String confirmation = scanner.nextLine();
         String departureCityObj = City.getCityByName(departureCity);
@@ -162,7 +165,6 @@ public class init {
         String arrivalCityObj = City.getCityByName(arrivalCity);
         String arrivalStationObj = Station.getStationByName(arrivalStation);
         
-        // Puis passez ces objets à enregistrerTicket
         if ("yes".equals(confirmation)) {
             color.printColor("Your trip has been confirmed. Enjoy your trip!", color.Green());
             Ticketing.enregistrerTicket(departureCity, departureStation, arrivalCity, arrivalStation, chosenHour);
@@ -173,6 +175,7 @@ public class init {
         }
     }
 
+    // Ticket method to access the tickets
     private void ticket() {
         color.printColor("You have chosen to access the tickets", color.Green());
         Ticketing.afficherBillets();
@@ -180,7 +183,7 @@ public class init {
         
         while (true) {
             String userInput = scanner.nextLine();
-            
+            // Return to the main menu
             if ("return".equals(userInput)) {
                color.printColor("Do you really want to return to the main menu? (yes/no)", color.Blue());
                 String confirmation = scanner.nextLine();
@@ -193,7 +196,7 @@ public class init {
                     color.printColor("Invalid input. Please answer 'yes' or 'no'.", color.Red());
                 }
             }
-
+            // Delete ticket
             if (userInput.startsWith("delete")) {
                 String[] parts = userInput.split(" ");
                 if (parts.length == 2) {

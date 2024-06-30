@@ -12,13 +12,14 @@ public class Route {
     private List<Station> stations;
     private Hourly hourly;
 
-    // Le constructeur accepte maintenant un objet City et une liste d'objets Station
+    // Constructor
     public Route(City city, List<Station> stations) {
         this.city = city;
         this.stations = stations;
         this.hourly = Hourly.generateHourly();
     }
 
+    // Getters
     public City getCity() {
         return city;
     }
@@ -27,11 +28,8 @@ public class Route {
         return stations;
     }
 
-    public Hourly getHourly() {
-        return hourly;
-    }
 
-
+    // From JSON
     public static List<Route> fromJson() {
         ObjectMapper mapper = new ObjectMapper();
         TypeReference<List<City>> typeReference = new TypeReference<List<City>>(){};
@@ -54,7 +52,7 @@ public class Route {
         }
     }
 
-    // Cette méthode peut rester inchangée si elle fonctionne comme prévu
+    // Update routes
     public static List<Route> updateRoutes(List<Route> routes, String selectedCity) {
         List<Route> updatedRoutes = new ArrayList<>();
         for (Route route : routes) {
@@ -65,7 +63,7 @@ public class Route {
         return updatedRoutes;
     }
 
-    // Cette méthode peut rester inchangée si elle fonctionne comme prévu
+    // Get hourly route
     public List<String> getHourlyRoute() {
         List<String> hourlyAsString = new ArrayList<>();
         int[] startHours = this.hourly.getStartHours();
